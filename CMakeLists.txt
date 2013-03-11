@@ -11,8 +11,8 @@ endmacro()
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${PROJECT_BINARY_DIR}/config.h)
 include_directories(${PROJECT_BINARY_DIR})
 
-get_directory_property(ND_SOURCE_DIR PARENT_DIRECTORY)
-include_directories(${ND_SOURCE_DIR})
+find_package(ND CONFIG PATHS cmake)
+include_directories(${ND_INCLUDE_DIR})
 
 ##############################################################################
 # SOURCE
@@ -27,7 +27,7 @@ file(GLOB HDRS src/*.h)
 
 add_definitions(-fPIC)
 add_library(ndio-raw MODULE ${SRCS} ${HDRS})
-target_link_libraries(ndio-raw nd)
+target_link_libraries(ndio-raw ${ND_LIBRARIES})
 
 ##############################################################################
 #  Testing
@@ -44,7 +44,7 @@ if(GTEST_FOUND)
   target_link_libraries(test-ndio-raw
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
-    nd
+    ${ND_LIBRARIES}
     )
   add_dependencies(test-ndio-raw gtest)
   gtest_copy_shared_libraries(test-ndio-raw)
