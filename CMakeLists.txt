@@ -13,7 +13,7 @@ include_directories(${PROJECT_BINARY_DIR})
 
 find_package(GTEST CONFIG PATHS cmake)
 find_package(ND CONFIG PATHS cmake)
-include_directories(${ND_INCLUDE_DIR})
+include_directories(${ND_INCLUDE_DIRS})
 
 ##############################################################################
 # SOURCE
@@ -56,13 +56,16 @@ endif()
 ##############################################################################
 #  Install
 ##############################################################################
+foreach(_path ${NDIO_PLUGIN_PATH})
+  install(TARGETS ndio-raw
+    RUNTIME DESTINATION ${_path}
+    LIBRARY DESTINATION ${_path}
+  )
+endforeach()
 install(TARGETS ndio-raw
-  EXPORT ndio-raw-targets
-  RUNTIME DESTINATION bin/${NDIO_PLUGIN_PATH}
-  LIBRARY DESTINATION bin/${NDIO_PLUGIN_PATH}
+  RUNTIME DESTINATION bin/plugins
+  LIBRARY DESTINATION bin/plugins
 )
-export(TARGETS ndio-raw FILE ndio-raw-targets.cmake)
-install(EXPORT ndio-raw-targets DESTINATION cmake)
 
 ################################################################################
 #  Documentation
