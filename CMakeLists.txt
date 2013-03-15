@@ -11,6 +11,7 @@ endmacro()
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${PROJECT_BINARY_DIR}/config.h)
 include_directories(${PROJECT_BINARY_DIR})
 
+find_package(GTEST CONFIG PATHS cmake)
 find_package(ND CONFIG PATHS cmake)
 include_directories(${ND_INCLUDE_DIR})
 
@@ -28,12 +29,12 @@ file(GLOB HDRS src/*.h)
 add_definitions(-fPIC)
 add_library(ndio-raw MODULE ${SRCS} ${HDRS})
 target_link_libraries(ndio-raw ${ND_LIBRARIES})
+add_dependencies(ndio-raw nd)
 
 ##############################################################################
 #  Testing
 ##############################################################################
 
-find_package(GTEST CONFIG PATHS cmake NAMES GTest)
 file(GLOB TEST_SOURCES test/*.cc)
 if(GTEST_FOUND)
   find_package(Threads)
@@ -46,7 +47,7 @@ if(GTEST_FOUND)
     ${CMAKE_THREAD_LIBS_INIT}
     ${ND_LIBRARIES}
     )
-  add_dependencies(test-ndio-raw gtest)
+  add_dependencies(test-ndio-raw gtest nd)
   gtest_copy_shared_libraries(test-ndio-raw)
   add_test(TestNDIOSeries test-ndio-raw)
   install(TARGETS test-ndio-raw RUNTIME DESTINATION bin)
