@@ -75,7 +75,7 @@ endif()
 #  Install
 ##############################################################################
 foreach(_path ${NDIO_PLUGIN_PATH})
-  install(TARGETS ndio-raw EXPORT ndio-raw-targets
+  install(TARGETS ndio-raw
     RUNTIME DESTINATION ${_path}
     LIBRARY DESTINATION ${_path}
   )
