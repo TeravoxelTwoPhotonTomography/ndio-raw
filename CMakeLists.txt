@@ -53,20 +53,6 @@ if(GTEST_FOUND)
   install(TARGETS test-ndio-raw RUNTIME DESTINATION bin)
 endif()
 
-##############################################################################
-#  Install
-##############################################################################
-foreach(_path ${NDIO_PLUGIN_PATH})
-  install(TARGETS ndio-raw
-    RUNTIME DESTINATION ${_path}
-    LIBRARY DESTINATION ${_path}
-  )
-endforeach()
-install(TARGETS ndio-raw
-  RUNTIME DESTINATION bin/plugins
-  LIBRARY DESTINATION bin/plugins
-)
-
 ################################################################################
 #  Documentation
 ################################################################################
@@ -85,4 +71,19 @@ if(DOXYGEN_FOUND)
     )
 endif()
 
-
+##############################################################################
+#  Install
+##############################################################################
+foreach(_path ${NDIO_PLUGIN_PATH})
+  install(TARGETS ndio-raw EXPORT ndio-raw-targets
+    RUNTIME DESTINATION ${_path}
+    LIBRARY DESTINATION ${_path}
+  )
+endforeach()
+install(TARGETS ndio-raw EXPORT ndio-raw-targets
+  RUNTIME DESTINATION bin/plugins
+  LIBRARY DESTINATION bin/plugins
+)
+install(EXPORT ndio-raw-targets DESTINATION cmake)
+export(TARGETS ndio-raw FILE ndio-raw-config.cmake)
+export(PACKAGE ndio-raw)
