@@ -8,6 +8,11 @@ endmacro()
 ################################################################################
 # CONFIG
 ################################################################################
+set(RPATH \$ORIGIN)
+if(APPLE)
+  set(RPATH @rpath)
+endif()
+set(CMAKE_INSTALL_RPATH ${RPATH})
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${PROJECT_BINARY_DIR}/config.h)
 include_directories(${PROJECT_BINARY_DIR})
 
