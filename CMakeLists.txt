@@ -55,7 +55,7 @@ if(GTEST_FOUND)
   add_dependencies(test-ndio-raw gtest nd)
   gtest_copy_shared_libraries(test-ndio-raw)
   add_test(TestNDIOSeries test-ndio-raw)
-  install(TARGETS test-ndio-raw RUNTIME DESTINATION bin)
+  install(TARGETS test-ndio-raw RUNTIME DESTINATION bin/test)
 endif()
 
 ################################################################################
