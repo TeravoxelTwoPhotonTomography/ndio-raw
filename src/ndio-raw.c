@@ -50,7 +50,7 @@ static unsigned raw_is_fmt(const char* path, const char *mode)
 /**
  * Opens a raw file.  Only writing permitted.
  */
-static void* raw_open(const char* path, const char* mode)
+static void* raw_open(ndio_fmt_t *fmt, const char* path, const char* mode)
 { FILE *out=0;
   TRY(parse_mode_string(mode));
   TRY(out=fopen(path,mode));
@@ -114,19 +114,11 @@ static unsigned raw_canseek(ndio_t file, size_t idim)
 /// Interface function for the ndio-raw plugin.
 shared const ndio_fmt_t* ndio_get_format_api(void)
 {
-  static ndio_fmt_t api=
-  { raw_fmt_name,
-    raw_is_fmt,
-    raw_open,
-    raw_close,
-    NULL,//raw_shape,
-    NULL,//raw_read,
-    raw_write,
-    NULL, //set
-    NULL, //get
-    NULL,//raw_canseek,
-    NULL,//raw_seek,
-    NULL
-  };
+  static ndio_fmt_t api={0};
+  api.name   = raw_fmt_name;
+  api.is_fmt = raw_is_fmt;
+  api.open   = raw_open;
+  api.close  = raw_close;
+  api.write  = raw_write;
   return &api;
 }
